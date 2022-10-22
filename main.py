@@ -1,9 +1,18 @@
+import base64
 import csv, json, requests, re
+from linecache import cache
+from email.mime import base
 from bs4 import BeautifulSoup
 import numpy as np
 import pandas as pd
+from requests.structures import CaseInsensitiveDict
+import base64
 
-kroger_client_id = "instahealth-179c5f3fd5cf54b9a407f14847ee638f3255889021849445767"
-kroger_client_secret = "Mj6Lw7QcGm7f3ZGprJMK-NqVdiCUBzaFoxqK8Lyv"
+url = "https://trackapi.nutritionix.com/v2/search/instant?query=grilled%20cheese"
 
-auth_str = "Authorization: Basic {{base64(" + kroger_client_id + ":" + kroger_client_secret + "}}"
+headers = CaseInsensitiveDict()
+headers["x-app-key"] = "39c6d041dcd2c9a2fa8ee3fdf0ce92d3"
+headers["x-app-id"] = "76b38792"
+
+resp = requests.get(url, headers=headers)
+print(resp.json())
