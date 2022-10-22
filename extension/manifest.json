@@ -8,14 +8,17 @@
         "default_popup": "index.html",
         "default_title": "InstaHealth"
     },
+    "background": {
+        "service_worker": "background.js"
+    },
     "content_scripts": [
         {
-        "matches": ["https://www.instacart.com/store/*/products/*"],
-        "js": ["lib/jquery.min.js", "script.js"],
-        "run_at": "document_idle"
+            "matches": ["http://www.instacart.com/*", "https://www.instacart.com/*"],
+            "js": ["lib/jquery.min.js", "script.js"]
         }
     ],
     "permissions": [
-        "activeTab"
+        "activeTab",
+        "tabs"
     ]
 }
