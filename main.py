@@ -27,33 +27,34 @@ def pull_data(search):
   response = requests.post(url, headers=headers, data=data)
 
   raw_list = response.json()
-  servings = raw_list['foods'][0]['serving_qty']
-  calories = servings * raw_list['foods'][0]['nf_calories']
-  carbohydrates = servings * raw_list['foods'][0]['nf_total_carbohydrate']
-  fat = servings * raw_list['foods'][0]['nf_total_fat']
-  protein = servings * raw_list['foods'][0]['nf_protein']
-  sodium = servings * raw_list['foods'][0]['nf_sodium']
-  sugar = servings * raw_list['foods'][0]['nf_sugars']
-  edited_dict = {"calories": calories, "carbohydrates": carbohydrates, "fat": fat, "protein": protein, "sodium": sodium, "sugar": sugar}
 
   item_name = raw_list['foods'][0]['food_name']
   item_brand = raw_list['foods'][0]['brand_name']
 
   print("You searched: " + search + " and we found: " + item_name)
 
-  return edited_dict
+  return raw_list
 
 
-def calculate_percent(API_dict):
+def calculate_percent(api_list):
   
   goals_dict = get_goals()
+
+  servings = api_list['foods'][0]['serving_qty']
+  calories = servings * api_list['foods'][0]['nf_calories']
+  carbohydrates = servings * api_list['foods'][0]['nf_total_carbohydrate']
+  fat = servings * api_list['foods'][0]['nf_total_fat']
+  protein = servings * api_list['foods'][0]['nf_protein']
+  sodium = servings * api_list['foods'][0]['nf_sodium']
+  sugar = servings * api_list['foods'][0]['nf_sugars']
+  edited_dict = {"calories": calories, "carbohydrates": carbohydrates, "fat": fat, "protein": protein, "sodium": sodium, "sugar": sugar}
   
-  print(API_dict)
+  # print(api_list)
 
   percent_dict = {}
   for item in goals_dict.items():
     str = item[0]
-    percent_dict[str] = API_dict[str] / item[1]
+    percent_dict[str] = edited_dict[str] / item[1]
     percent_dict[str] = round(percent_dict[str]*100, 2)
 
   return percent_dict
