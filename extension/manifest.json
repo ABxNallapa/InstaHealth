@@ -7,5 +7,15 @@
     "action":{
         "default_popup": "index.html",
         "default_title": "InstaHealth"
-    }
+    },
+    "content_scripts": [
+        {
+        "matches": ["https://www.instacart.com/store/publix/products/510450"],
+        "js": ["script.js"],
+        "run_at": "document_end"
+        }
+    ],
+    "permissions": [
+        "activeTab"
+    ]
 }
