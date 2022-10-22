@@ -1,32 +1,46 @@
-//alert('hello world');
-// const allEls = document.getElementsByTagName("*");
-// for (const el of allEls) {
-//     console.log(el)
-// }
-
-
-
-const x = $(document).xpathEvaluate("//*[@id=\"item_details\"]/div[5]/div[2]/div/ul[2]/li[2]/ul/li[1]/span[1]");
-console.log(x);
-
-//let paragraphs = document.getElementsByTagName
-
-if (window.location.href.includes('https://www.instacart.com/store/publix/products/')) {
-    document.querySelector('.item_details-items') = "A new Headline";
+let food_data = {
+  name: null,
+  nutrition: {
+    calories: null,
+    fat: null,
+    cholesterol: null,
+    sodium: null,
+    carbs: null,
+    protein: null,
+  }
 }
 
+console.log("SCRIPT IS RUNNING");
 
-document.body.style.display = "none"
-var URL = chrome.runtime.getURL("https://www.instacart.com/store/publix/products/2683119");
-document.getElementsByClassName("css-dpfmh3-NutritionalFacts").src = URL;
+// Name
+food_data.name = $(".css-16ptqna")[0].innerText;
 
-function injectedFunction() {
-    document.body.style.display = "none";
-}
+// Calories
+food_data.nutrition.calories = parseInt($(".css-dpfmh3-NutritionalFacts")[0].children[1].innerText.split(" ").slice(-1)[0]);
 
-  chrome.action.onClicked.addListener((tab) => {
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      func: injectedFunction
-    });
-  });
+// Other Nutrition Data
+$(".css-dpfmh3-NutritionalFacts").find(".css-2y6cy8-Category").each((idx, obj) => {
+  let nutritionText = obj.children[0].innerText;
+  let label = nutritionText.substring(0, nutritionText.lastIndexOf(" "));
+  let value = nutritionText.substring(nutritionText.lastIndexOf(" ") + 1);
+  switch(label) {
+    case "Total Fat":
+      food_data.nutrition.fat = value;
+      break;
+    case "Cholesterol":
+      food_data.nutrition.cholesterol = value;
+      break;
+    case "Sodium":
+      food_data.nutrition.sodium = value;
+      break;
+    case "Total Carbohydrate":
+      food_data.nutrition.carbs = value;
+      break;
+    case "Protein":
+      food_data.nutrition.protein = value;
+      break;
+  }
+})
+
+console.log("FOOD DATA");
+console.log(food_data);
