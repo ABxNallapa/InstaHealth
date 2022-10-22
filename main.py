@@ -7,14 +7,18 @@ import pandas as pd
 from requests.structures import CaseInsensitiveDict
 import myfitnesspal
 from datetime import date
+from flask import Flask, request
 
 def get_goals():
     client = myfitnesspal.Client()
 
     return client.get_date(date.today().year, date.today().month, date.today().day).goals
 
+app = Flask(__name__)
 
-def pull_data(search):
+@app.route('/pull_data')
+def pull_data():
+  search = request.args.get('search')
   url = "https://trackapi.nutritionix.com/v2/natural/nutrients"
 
   headers = CaseInsensitiveDict()
@@ -33,31 +37,42 @@ def pull_data(search):
 
   print("You searched: " + search + " and we found: " + item_name)
 
-  return raw_list
+  return {"servings": raw_list['foods'][0]['serving_qty'],
+          "calories": raw_list['foods'][0]['nf_calories'],
+          "carbohydrates": raw_list['foods'][0]['nf_total_carbohydrate'],
+          "fat": raw_list['foods'][0]['nf_total_fat'],
+          "protein": raw_list['foods'][0]['nf_protein'],
+          "sodium": raw_list['foods'][0]['nf_sodium'],
+          "sugar": raw_list['foods'][0]['nf_sugars'],}
 
-
-def calculate_percent(api_list):
+@app.route('/calculate_percent', methods=['POST'])
+def calculate_percent():
   
   goals_dict = get_goals()
-
-  servings = api_list['foods'][0]['serving_qty']
-  calories = servings * api_list['foods'][0]['nf_calories']
-  carbohydrates = servings * api_list['foods'][0]['nf_total_carbohydrate']
-  fat = servings * api_list['foods'][0]['nf_total_fat']
-  protein = servings * api_list['foods'][0]['nf_protein']
-  sodium = servings * api_list['foods'][0]['nf_sodium']
-  sugar = servings * api_list['foods'][0]['nf_sugars']
-  edited_dict = {"calories": calories, "carbohydrates": carbohydrates, "fat": fat, "protein": protein, "sodium": sodium, "sugar": sugar}
+  api_list = request.get_json()
+  servings = api_list['servings']
+  calories = servings * api_list['calories']
+  carbohydrates = servings * api_list['carbohydrates']
+  fat = servings * api_list['fat']
+  protein = servings * api_list['protein']
+  sodium = servings * api_list['sodium']
+  sugar = servings * api_list['sugar']
+  scaled_dict = {"calories": calories, "carbohydrates": carbohydrates, "fat": fat, "protein": protein, "sodium": sodium, "sugar": sugar}
   
   # print(api_list)
 
   percent_dict = {}
   for item in goals_dict.items():
     str = item[0]
-    percent_dict[str] = edited_dict[str] / item[1]
+    percent_dict[str] = scaled_dict[str] / item[1]
     percent_dict[str] = round(percent_dict[str]*100, 2)
 
   return percent_dict
 
 
-print(calculate_percent(pull_data("beyond burger")))
+if __name__ == '__main__':
+    # run app in debug mode on port 5000
+    app.run(debug=True, port=5000)
+
+
+# Curl command to make post request to calculate_percent
