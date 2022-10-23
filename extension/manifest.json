@@ -4,6 +4,9 @@
     "description": "A personalized nutrition analysis and recommendation tool for instacart.",
     "manifest_version": 3,
     "author": "Abhinav Nallapa",
+    "icons": {
+        "32": "res/icon32.png"
+    },
     "action":{
         "default_popup": "index.html",
         "default_title": "InstaHealth"

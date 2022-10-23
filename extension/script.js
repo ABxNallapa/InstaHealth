@@ -36,36 +36,38 @@ function run_instahealth() {
 	}
 }
 
-// function scrapeProductData() {
-// 	let name = document.evaluate("//*[@id=\"item_details\"]/div[2]/div[2]/div[1]/h2/span", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText;
-// 	let calories = document.evaluate("//*[@id=\"item_details\"]/div[5]/div[2]/div/ul[1]/li[2]/span", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText;
-// 	calories = calories.slice(10);
-// 	let carbohydrates = document.evaluate("//*[@id=\"item_details\"]/div[5]/div[2]/div/ul[2]/li[5]/ul/li[1]/span[1]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText;
-// 	carbohydrates = carbohydrates.slice(19, carbohydrates.length - 1);
-// 	let fat = document.evaluate("//*[@id=\"item_details\"]/div[5]/div[2]/div/ul[2]/li[2]/ul/li[1]/span[1]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText;
-// 	fat = fat.slice(11, fat.length - 1);
-// 	let protein = document.evaluate("//*[@id=\"item_details\"]/div[5]/div[2]/div/ul[2]/li[6]/span[1]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText;
-// 	protein = protein.slice(8, protein.length - 1);
-// 	let sodium = document.evaluate("//*[@id=\"item_details\"]/div[5]/div[2]/div/ul[2]/li[4]/span[1]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText;
-// 	sodium = sodium.slice(8, sodium.length - 2);
-
-
-// 	let food_data = {
-// 		name: name,
-// 		nutrition: {
-// 			calories: calories,
-// 			fat: fat,
-// 			cholesterol: cholesterol,
-// 			sodium: sodium,
-// 			carbs: carbohydrates,
-// 			protein: protein,
-// 		}
-// 	}
-  
-// 	return food_data;
-// }
-
 function scrapeProductData() {
+	let food_data = {
+		name: null,
+		nutrition: {}
+	};
+
+	food_data.name = document.evaluate("//*[@id=\"item_details\"]/div[2]/div[2]/div[1]/h2/span", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText;
+
+	try {
+		let calories = document.evaluate("//*[@id=\"item_details\"]/div[5]/div[2]/div/ul[1]/li[2]/span", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText;
+		food_data.nutrition.calories = parseInt(calories.substring(calories.lastIndexOf(" ") + 1));
+		let carbohydrates = document.evaluate("//*[@id=\"item_details\"]/div[5]/div[2]/div/ul[2]/li[5]/ul/li[1]/span[1]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText;
+		food_data.nutrition.carbohydrates = parseInt(carbohydrates.substring(carbohydrates.lastIndexOf(" ") + 1));
+		let fat = document.evaluate("//*[@id=\"item_details\"]/div[5]/div[2]/div/ul[2]/li[2]/ul/li[1]/span[1]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText;
+		food_data.nutrition.fat = parseInt(fat.substring(fat.lastIndexOf(" ") + 1));
+		let protein = document.evaluate("//*[@id=\"item_details\"]/div[5]/div[2]/div/ul[2]/li[6]/span[1]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText;
+		food_data.nutrition.protein = parseInt(protein.substring(protein.lastIndexOf(" ") + 1));
+		let sodium = document.evaluate("//*[@id=\"item_details\"]/div[5]/div[2]/div/ul[2]/li[4]/span[1]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText;
+		food_data.nutrition.sodium = parseInt(sodium.substring(sodium.lastIndexOf(" ") + 1));
+
+		let servings = document.evaluate("//*[@id=\"item_details\"]/div[5]/div[2]/div/div[1]/div[2]/span[3]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText;;
+		food_data.nutrition.servings = parseInt(servings.substring(servings.lastIndexOf(" ") + 1));
+		
+		food_data.nutrition.sugar = 0;
+	} catch (error) {
+		food_data.nutrition = null;
+	}
+  
+	return food_data;
+}
+
+function scrapeProductDataOld() {
 	let food_data = {
 		name: null,
 		nutrition: {

@@ -3,6 +3,7 @@ import { Chart, registerables } from "./lib/dist/chart.js";
 let queryOptions = { active: true, lastFocusedWindow: true };
 chrome.tabs.query(queryOptions).then(([tab]) => {
     if (tab) {
+        chrome.action.setBadgeText({tabId: tab.id, text: ""});
         chrome.runtime.sendMessage({
             message: 'request_percent_data',
             tabId: tab.id,
