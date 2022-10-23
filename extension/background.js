@@ -4,7 +4,6 @@ var food_data = {};
 
 chrome.tabs.onUpdated.addListener(
     function(tabId, changeInfo, tab) {
-        console.log(tabId)
         if (changeInfo.url) {
             percent_data[tabId] = null;
             food_data[tabId] = null;

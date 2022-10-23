@@ -19,6 +19,10 @@ def get_goals():
 app = Flask(__name__)
 CORS(app)
 
+@app.route('/pull_goals')
+def pull_goals():
+  return get_goals()
+
 @app.route('/pull_data')
 def pull_data():
   search = request.args.get('search')
@@ -51,6 +55,7 @@ def pull_data():
 @app.route('/calculate_percent', methods=['POST'])
 def calculate_percent():
   goals_dict = get_goals()
+
   api_list = request.get_json()
 
   servings = api_list['servings']
@@ -60,14 +65,21 @@ def calculate_percent():
   protein = servings * api_list['protein']
   sodium = servings * api_list['sodium']
   sugar = servings * api_list['sugar']
-  scaled_dict = {"calories": calories, "carbohydrates": carbohydrates, "fat": fat, "protein": protein, "sodium": sodium, "sugar": sugar}
+  all_serv_dict = {"calories": calories, "carbohydrates": carbohydrates, "fat": fat, "protein": protein, "sodium": sodium, "sugar": sugar}
 
-  percent_dict = {}
+  per_serv_dict = {"calories": api_list['calories'], "carbohydrates": api_list['carbohydrates'], "fat": api_list['fat'], "protein": api_list['protein'], "sodium": api_list['sodium'], "sugar": api_list['sugar']}
+  
+  print(per_serv_dict)
+  print(goals_dict)
+
+  per_serv_percent_dict = {}
+  all_serv_percent_dict = {}
   for item in goals_dict.items():
     str = item[0]
-    percent_dict[str] = scaled_dict[str] / item[1]
+    all_serv_percent_dict[str] = all_serv_dict[str] / item[1]
+    per_serv_percent_dict[str] = per_serv_dict[str] / item[1]
 
-  return percent_dict
+  return {"total": all_serv_percent_dict, "per_serving": per_serv_percent_dict}
 
 
 if __name__ == '__main__':
