@@ -30,11 +30,12 @@ function createChart(id, percent, color, category) {
     labels: labels,
     datasets: [
       {
-        label: category,
         backgroundColor: [color, "rgb(192, 192, 192)"],
         borderColor: "rgb(255, 255, 255)",
         borderWidth: 2,
         cutout: "65%",
+        hoverOffset: 10,
+        hoverBorderWidth: 6,
         data: [percent * 100, 100 - percent * 100],
         // percent is percent from python dict returned from calculate_percent()
       },
