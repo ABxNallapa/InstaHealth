@@ -13,15 +13,9 @@ chrome.tabs.query(queryOptions).then(([tab]) => {
 });
 
 function updateUI(percent_data) {
-    document.getElementById("data").innerText = JSON.stringify(percent_data);
+    console.log(percent_data)
+    calorieChart.data = [percent_data["calories"] * 100, 100 - percent_data["calories"] * 100]
 }
-
-let category = "calories";
-const labels = [
-  "Total " + category,
-  category,
-  // category is taken from python dict returned from calculate_percent()
-];
 
 function createChart(id, percent, color, category) {
   let canvas = document.getElementById(id);
@@ -30,11 +24,12 @@ function createChart(id, percent, color, category) {
     labels: labels,
     datasets: [
       {
-        label: category,
         backgroundColor: [color, "rgb(192, 192, 192)"],
         borderColor: "rgb(255, 255, 255)",
         borderWidth: 2,
         cutout: "65%",
+        hoverOffset: 10,
+        hoverBorderWidth: 6,
         data: [percent * 100, 100 - percent * 100],
         // percent is percent from python dict returned from calculate_percent()
       },
@@ -61,8 +56,8 @@ function createChart(id, percent, color, category) {
 
 Chart.register(...registerables);
 
-const calorieChart = createChart("calorieChart", 0.5, "rgb(255, 99, 132)", "Calories");
-const proteinChart = createChart("proteinChart", 0.5, "rgb(255, 99, 132)", "Protein");
-const carbChart = createChart("carbChart", 0.5, "rgb(255, 99, 132)", "Carbs");
-const fatChart = createChart("fatChart", 0.5, "rgb(255, 99, 132)", "Fat");
+const calorieChart = createChart("calorieChart", 0.75, "rgb(0, 0, 0)", "Calories");
+const proteinChart = createChart("proteinChart", 0.75, "rgb(139, 69, 19)", "Protein");
+const carbChart = createChart("carbChart", 0.75, "rgb(255, 255, 0)", "Carbs");
+const fatChart = createChart("fatChart", 0.75, "rgb(258, 255, 0)", "Fat");
 
