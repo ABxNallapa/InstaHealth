@@ -23,7 +23,7 @@ function run_instahealth() {
 			fetchPercentData(food_data).then((percent_data) => {
 				console.log(percent_data)
 				console.log("Running Instaheath (Saving Percent Data). . .")
-				savePercentData(percent_data);
+				saveData(percent_data, food_data);
 			})
 		})
 	} else {
@@ -31,7 +31,7 @@ function run_instahealth() {
 		fetchPercentData(food_data).then((percent_data) => {
 			console.log(percent_data);
 			console.log("Running Instaheath (Updating UI). . .")
-			savePercentData(percent_data);
+			saveData(percent_data, food_data);
 		})
 	}
 }
@@ -142,9 +142,10 @@ async function fetchPercentData(food_data) {
 	return await response.json();
 }
 
-function savePercentData(percent_data) {
+function saveData(percent_data, food_data) {
 	chrome.runtime.sendMessage({
 		message: 'new_percent_data',
-		data: percent_data,
+		percent_data: percent_data,
+		food_data: food_data
 	});
 }

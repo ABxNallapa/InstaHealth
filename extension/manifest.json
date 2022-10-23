@@ -7,6 +7,10 @@
     "icons": {
         "32": "res/icon32.png"
     },
+    "web_accessible_resources": [{
+        "matches": ["<all_urls>"],
+        "resources": ["res/icon.png"]
+    }],
     "action":{
         "default_popup": "index.html",
         "default_title": "InstaHealth"
