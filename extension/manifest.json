@@ -14,7 +14,7 @@
     "content_scripts": [
         {
             "matches": ["http://www.instacart.com/*", "https://www.instacart.com/*"],
-            "js": ["lib/jquery.min.js", "script.js"]
+            "js": ["lib/jquery.min.js", "script.js", "lib/dist/chart.js"]
         }
     ],
     "permissions": [

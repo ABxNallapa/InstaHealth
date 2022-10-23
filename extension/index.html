@@ -4,11 +4,23 @@
     <title>InstaHealth!</title>
     <meta charset="utf-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="lib/dist/chart.js" type="module"></script>
+    <script src="index.js" type="module"></script>
 </head>
 <body>
-    <div class="container mt-3" style="width: 450px;">
-        <h2 class="text-center">InstaHealth</h2>
-        <p>This extension does nothing right now.</p>
+    <div class="d-flex">
+        <div class="container mt-3" style="height: 100px">
+            <canvas id="calorieChart"></canvas>
+        </div>
+        <div class="container mt-3" style="height: 100px">
+            <canvas id="proteinChart"></canvas>
+        </div>
+        <div class="container mt-3" style="height: 100px">
+            <canvas id="carbChart"></canvas>
+        </div>
+        <div class="container mt-3" style="height: 100px">
+            <canvas id="fatChart"></canvas>
+        </div>
     </div>
 </body>
 </html>

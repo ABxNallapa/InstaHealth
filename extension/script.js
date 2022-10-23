@@ -114,3 +114,6 @@ async function fetchPercentData(food_data) {
 function updateUI(percent_data) {
 	$(".css-1qm1lh").append(JSON.stringify(percent_data));
 }
+
+
+
