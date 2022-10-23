@@ -112,5 +112,10 @@ async function fetchPercentData(food_data) {
 }
 
 function updateUI(percent_data) {
-	$(".css-1qm1lh").append(JSON.stringify(percent_data));
+	// $(".css-1qm1lh").append(JSON.stringify(percent_data));
+	console.log("SENDING MESSAGE")
+	chrome.runtime.sendMessage({
+		message: 'new_percent_data',
+		data: percent_data,
+	});
 }
