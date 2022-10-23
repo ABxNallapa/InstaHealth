@@ -1,5 +1,21 @@
 import { Chart, registerables } from "./lib/dist/chart.js";
 
+let queryOptions = { active: true, lastFocusedWindow: true };
+chrome.tabs.query(queryOptions).then(([tab]) => {
+    if (tab) {
+        chrome.runtime.sendMessage({
+            message: 'request_percent_data',
+            tabId: tab.id,
+        }, (response) => {
+            updateUI(response.data)
+        });
+    }
+});
+
+function updateUI(percent_data) {
+    document.getElementById("data").innerText = JSON.stringify(percent_data);
+}
+
 let category = "calories";
 const labels = [
   "Total " + category,
@@ -9,17 +25,17 @@ const labels = [
 
 function createChart(id, percent, color, category) {
   let canvas = document.getElementById(id);
-  const labels = ["", category];
+  const labels = [category, ""];
   const data = {
     labels: labels,
     datasets: [
       {
         label: category,
-        backgroundColor: ["rgb(192, 192, 192)", color],
+        backgroundColor: [color, "rgb(192, 192, 192)"],
         borderColor: "rgb(255, 255, 255)",
         borderWidth: 2,
         cutout: "65%",
-        data: [100 - percent * 100, percent * 100],
+        data: [percent * 100, 100 - percent * 100],
         // percent is percent from python dict returned from calculate_percent()
       },
     ],
