@@ -8,6 +8,8 @@ from requests.structures import CaseInsensitiveDict
 import myfitnesspal
 from datetime import date
 from flask import Flask, request
+from flask import jsonify
+from flask_cors import CORS
 
 def get_goals():
     client = myfitnesspal.Client()
@@ -15,6 +17,7 @@ def get_goals():
     return client.get_date(date.today().year, date.today().month, date.today().day).goals
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/pull_data')
 def pull_data():
@@ -47,9 +50,9 @@ def pull_data():
 
 @app.route('/calculate_percent', methods=['POST'])
 def calculate_percent():
-  
   goals_dict = get_goals()
   api_list = request.get_json()
+
   servings = api_list['servings']
   calories = servings * api_list['calories']
   carbohydrates = servings * api_list['carbohydrates']
@@ -58,14 +61,11 @@ def calculate_percent():
   sodium = servings * api_list['sodium']
   sugar = servings * api_list['sugar']
   scaled_dict = {"calories": calories, "carbohydrates": carbohydrates, "fat": fat, "protein": protein, "sodium": sodium, "sugar": sugar}
-  
-  # print(api_list)
 
   percent_dict = {}
   for item in goals_dict.items():
     str = item[0]
     percent_dict[str] = scaled_dict[str] / item[1]
-    percent_dict[str] = round(percent_dict[str]*100, 2)
 
   return percent_dict
 
