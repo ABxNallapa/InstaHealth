@@ -13,8 +13,13 @@ chrome.tabs.query(queryOptions).then(([tab]) => {
 });
 
 function updateUI(percent_data) {
-    console.log(percent_data)
-    calorieChart.data = [percent_data["calories"] * 100, 100 - percent_data["calories"] * 100]
+    Chart.register(...registerables);
+    if (percent_data) {
+        const calorieChart = createChart("calorieChart", percent_data["calories"], "rgb(255, 99, 132)", "Calories");
+        const proteinChart = createChart("proteinChart", percent_data["protein"], "rgb(255, 99, 132)", "Protein");
+        const carbChart = createChart("carbChart", percent_data["carbohydrates"], "rgb(255, 99, 132)", "Carbs");
+        const fatChart = createChart("fatChart", percent_data["fat"], "rgb(255, 99, 132)", "Fat");
+    }
 }
 
 function createChart(id, percent, color, category) {
@@ -53,11 +58,3 @@ function createChart(id, percent, color, category) {
   };
   return new Chart(canvas, config);
 }
-
-Chart.register(...registerables);
-
-const calorieChart = createChart("calorieChart", 0.75, "rgb(0, 0, 0)", "Calories");
-const proteinChart = createChart("proteinChart", 0.75, "rgb(139, 69, 19)", "Protein");
-const carbChart = createChart("carbChart", 0.75, "rgb(255, 255, 0)", "Carbs");
-const fatChart = createChart("fatChart", 0.75, "rgb(258, 255, 0)", "Fat");
-

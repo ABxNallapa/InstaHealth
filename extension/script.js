@@ -36,6 +36,35 @@ function run_instahealth() {
 	}
 }
 
+// function scrapeProductData() {
+// 	let name = document.evaluate("//*[@id=\"item_details\"]/div[2]/div[2]/div[1]/h2/span", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText;
+// 	let calories = document.evaluate("//*[@id=\"item_details\"]/div[5]/div[2]/div/ul[1]/li[2]/span", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText;
+// 	calories = calories.slice(10);
+// 	let carbohydrates = document.evaluate("//*[@id=\"item_details\"]/div[5]/div[2]/div/ul[2]/li[5]/ul/li[1]/span[1]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText;
+// 	carbohydrates = carbohydrates.slice(19, carbohydrates.length - 1);
+// 	let fat = document.evaluate("//*[@id=\"item_details\"]/div[5]/div[2]/div/ul[2]/li[2]/ul/li[1]/span[1]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText;
+// 	fat = fat.slice(11, fat.length - 1);
+// 	let protein = document.evaluate("//*[@id=\"item_details\"]/div[5]/div[2]/div/ul[2]/li[6]/span[1]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText;
+// 	protein = protein.slice(8, protein.length - 1);
+// 	let sodium = document.evaluate("//*[@id=\"item_details\"]/div[5]/div[2]/div/ul[2]/li[4]/span[1]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText;
+// 	sodium = sodium.slice(8, sodium.length - 2);
+
+
+// 	let food_data = {
+// 		name: name,
+// 		nutrition: {
+// 			calories: calories,
+// 			fat: fat,
+// 			cholesterol: cholesterol,
+// 			sodium: sodium,
+// 			carbs: carbohydrates,
+// 			protein: protein,
+// 		}
+// 	}
+  
+// 	return food_data;
+// }
+
 function scrapeProductData() {
 	let food_data = {
 		name: null,
